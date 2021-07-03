@@ -28,13 +28,14 @@ var CapitalsCmd = &cobra.Command{
 			}
 		}
 
-
 		c := country_info.NewCountryInfoClient()
 
 		fmt.Println("Loading...\n")
+
 		countries, err := c.GetCountries()
 		if err != nil {
 			log.Println("Ooops", err)
+			return
 		}
 
 		var points int
@@ -102,5 +103,8 @@ func RandomCountries(countries []country_info.Country, size int) []country_info.
 }
 
 func RandomCountry(countries []country_info.Country) country_info.Country {
-	return RandomCountries(countries, 1)[0]
+	rand.Seed(time.Now().UnixNano())
+	max := len(countries) - 1
+
+	return countries[rand.Intn(max + 1)]
 }
