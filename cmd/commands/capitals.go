@@ -8,6 +8,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -15,7 +16,19 @@ import (
 var CapitalsCmd = &cobra.Command{
 	Use:   "capitals",
 	Short: "Start a country capitals guessing game",
+	Long: "In this game, you need to choose the correct country of a capital city. You can choose the number of options that will be displayed.",
+	Example: "capitals 5",
 	Run: func(cmd *cobra.Command, args []string) {
+		size := 2
+
+		if len(args) > 0 {
+			val, err := strconv.Atoi(args[0])
+			if err == nil && val > 2 {
+				size = val
+			}
+		}
+
+
 		c := country_info.NewCountryInfoClient()
 
 		fmt.Println("Loading...\n")
@@ -27,7 +40,7 @@ var CapitalsCmd = &cobra.Command{
 		var points int
 		var tries int
 		for  {
-			selectedCountries := RandomCountries(countries, 2)
+			selectedCountries := RandomCountries(countries, size)
 			correctCountry := RandomCountry(selectedCountries)
 
 			capital, err := c.GetCapital(correctCountry.Code)
@@ -61,7 +74,7 @@ var CapitalsCmd = &cobra.Command{
 			tries++
 		}
 
-		fmt.Println("You answered", points, "correctly of", tries, "questions.")
+		fmt.Println("\n\nYou answered", points, "correctly of", tries, "questions.")
 		if points == 0 {
 			fmt.Println("It was BAAAAD")
 		}
