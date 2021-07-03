@@ -22,8 +22,6 @@ RUN apk add ca-certificates
 
 COPY --from=build /source/out/country-info /app/country-info
 
-COPY config/.env /source/config/.env
-
 EXPOSE 8080
 
 CMD ["/app/country-info"]
