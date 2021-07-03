@@ -2,7 +2,6 @@ package country_info
 
 import (
 	"encoding/xml"
-	"log"
 	"strings"
 )
 
@@ -32,7 +31,7 @@ type Country struct {
 	Code string
 }
 
-func (c * CountryInfo) GetCountries() (string, error) {
+func (c * CountryInfo) GetCountries() ([]Country, error) {
 	payload := []byte(strings.TrimSpace(`
     <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 	  <soap:Body>
@@ -44,13 +43,13 @@ func (c * CountryInfo) GetCountries() (string, error) {
 
 	action, err := c.NewAction("ListOfCountryNamesByCode", payload)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	res := CountriesResponse{}
 	err = action.Do(&res)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	var countries []Country
@@ -60,6 +59,6 @@ func (c * CountryInfo) GetCountries() (string, error) {
 			Code: val.SISOCode,
 		})
 	}
-	log.Println(countries)
-	return "", nil
+
+	return countries, nil
 }
