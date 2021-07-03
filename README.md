@@ -1,8 +1,8 @@
 # Go Country Infos
-
+This is a sample command line application that consumes [DataFlex Web Service for Country information](http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso) SOAP Service
 ## How to build and run the application
 
-### Docker
+### Option 1: Docker
 Download this repository and run
 ````shell
 docker build -t countries .
@@ -10,7 +10,7 @@ docker run -it -t countries /bin/sh
 app/country-info
 ````
 
-### With local go installation
+### Option 2: With local go installation
 If you don't have docker installed, you can run with a local go installation.
 
 #### Install golang
@@ -26,8 +26,8 @@ go run entrypoints/capitals/main.go
 ## How to interact with the application
 ***N*** is the number of countries to be displayed. *Optional argument*
 
-#### Docker
-Inside the container, run ``app/country-info capitals *N*``
+### With Docker
+Inside the container, run ``app/country-info capitals N``
 
 **Example**
 ```shell
@@ -38,7 +38,7 @@ app/country-info capitals 5
 
 To get help, run `` app/country-info capitals -h``
 
-#### Local Go installation
+### With Local Go installation
 `` go run entrypoints/capitals/main.go capitals N``
 
 **Example**
