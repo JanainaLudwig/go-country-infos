@@ -19,5 +19,5 @@ Go to [https://golang.org/doc/install](https://golang.org/doc/install) and follo
 ````shell
 go mod vendor
 go mod download
-go run entrypoints/api/main.go
+go run entrypoints/capitals/main.go
 ````
