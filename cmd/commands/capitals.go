@@ -11,7 +11,15 @@ var CapitalsCmd = &cobra.Command{
 	Short: "Start a country capitals guessing game",
 	Run: func(cmd *cobra.Command, args []string) {
 		c := country_info.NewCountryInfoClient()
-		err := c.GetCapital("BR")
+
+		capital, err := c.GetCapital("BR")
+		if err != nil {
+			log.Println("Ooops", err)
+		}
+
+		log.Println("capital", capital)
+
+		_, err = c.GetCountries()
 		if err != nil {
 			log.Println("Ooops", err)
 		}

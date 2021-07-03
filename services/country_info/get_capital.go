@@ -2,7 +2,6 @@ package country_info
 
 import (
 	"encoding/xml"
-	"log"
 	"strings"
 )
 
@@ -20,8 +19,7 @@ type CapitalResponse struct {
 	} `xml:"Body"`
 }
 
-
-func (c * CountryInfo) GetCapital(countryCode string) error {
+func (c * CountryInfo) GetCapital(countryCode string) (string, error) {
 	payload := []byte(strings.TrimSpace(`
     <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 	  <soap:Body>
@@ -34,58 +32,14 @@ func (c * CountryInfo) GetCapital(countryCode string) error {
 
 	action, err := c.NewAction("CapitalCity", payload)
 	if err != nil {
-		return err
-	}
-
-	err = action.Do()
-	if err != nil {
-		return err
+		return "", err
 	}
 
 	res := CapitalResponse{}
-	err = action.Decode(&res)
+	err = action.Do(&res)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	log.Println(res.Body.CapitalCityResponse.CapitalCityResult)
-
-	return nil
+	return res.Body.CapitalCityResponse.CapitalCityResult, nil
 }
-
-/*
-
-func (c * CountryInfo) GetCapital(countryCode string) error {
-	payload := []byte(strings.TrimSpace(`
-    <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-	  <soap:Body>
-		<CapitalCity xmlns="http://www.oorsprong.org/websamples.countryinfo">
-		  <sCountryISOCode>` + countryCode + `</sCountryISOCode>
-		</CapitalCity>
-	  </soap:Body>
-	</soap:Envelope>`,
-	))
-
-	req, err := http.NewRequest("POST", "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso", bytes.NewReader(payload))
-	if err != nil {
-		return err
-	}
-
-	req.Header.Set("Content-type", "text/xml")
-	req.Header.Set("SOAPAction", "CapitalCity")
-
-	res, err := c.client.Do(req)
-	if err != nil {
-		return err
-	}
-
-	data, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return err
-	}
-
-	log.Println(string(data))
-	return nil
-}
-
-*/

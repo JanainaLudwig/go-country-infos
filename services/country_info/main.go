@@ -37,7 +37,7 @@ func (c * CountryInfo) NewAction(action string, payload []byte) (*CountryInfoAct
 	}, err
 }
 
-func (c *CountryInfoAction) Do() error {
+func (c *CountryInfoAction) Do(dest interface{}) error {
 	client := http.Client{}
 
 	res, err := client.Do(c.request)
@@ -47,11 +47,7 @@ func (c *CountryInfoAction) Do() error {
 
 	c.Response = res
 
-	return err
-}
-
-func (c *CountryInfoAction) Decode(dest interface{}) error {
-	err := xml.NewDecoder(c.Response.Body).Decode(dest)
+	err = xml.NewDecoder(c.Response.Body).Decode(dest)
 
 	return err
 }
