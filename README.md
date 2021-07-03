@@ -36,6 +36,8 @@ docker run -it -t countries /bin/sh
 app/country-info capitals 5
 ```
 
+To get help, run `` app/country-info capitals -h``
+
 #### Local Go installation
 `` go run entrypoints/capitals/main.go capitals N``
 
